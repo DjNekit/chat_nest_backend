@@ -38,7 +38,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
     @Req() req
   ) {
-    console.log(req);
     const { accessToken, refreshToken } = await this.authService.signin(user);
 
     setRefreshTokenInCookie(res, refreshToken);
