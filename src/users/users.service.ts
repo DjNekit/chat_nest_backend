@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, BadGatewayException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUserDto';
@@ -15,9 +15,9 @@ export class UsersService {
     return await this.usersRepository.find();
   }
 
-  async findByIdOrFail(id: number) {
-    const user = await this.usersRepository.findOneByOrFail({ id });
-    return user;
+  async findById(id: number) {
+    const user = await this.usersRepository.findOneBy({ id });
+    return user || null;
   }
 
   async findByEmail(email: string) {
@@ -45,7 +45,11 @@ export class UsersService {
   }
 
   async updateByIdOrFail(id: number, updateData) {
-    const user = await this.findByIdOrFail(id);
+    const user = await this.findById(id);
+
+    if (!user) {
+      throw new BadGatewayException('User not found')
+    }
 
     for (const field in updateData) {
       user[field] = updateData[field];

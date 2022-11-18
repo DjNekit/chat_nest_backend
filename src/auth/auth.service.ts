@@ -15,9 +15,14 @@ export class AuthService {
   async validateUser(email: string, inputPassword: string) {
     const user = await this.usersService.findByEmail(email);
 
+    if (!user) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
     const { password, ...userData } = user;
     const isMatch = await bcrypt.compare(inputPassword, password);
-    if (!user || !isMatch) {
+    
+    if (!isMatch) {
       throw new BadRequestException('Invalid credentials');
     }
 
@@ -80,7 +85,11 @@ export class AuthService {
   }
 
   async refreshTokens(id: number, refreshToken: string): Promise<Tokens> {
-    const user = await this.usersService.findByIdOrFail(id);
+    const user = await this.usersService.findById(id);
+    
+    if (!user) {
+      throw new BadRequestException('refresh error')
+    }
 
     const isRefreshTokenValide = refreshToken === user.refreshToken;
 
