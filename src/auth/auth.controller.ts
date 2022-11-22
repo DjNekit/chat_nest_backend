@@ -71,6 +71,8 @@ export class AuthController {
       throw new UnauthorizedException('refresh error');
     }
 
+    setRefreshTokenInCookie(res, tokens.refreshToken);
+
     return {
       accessToken: tokens.accessToken
     };
