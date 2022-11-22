@@ -88,7 +88,7 @@ export class AuthService {
     const user = await this.usersService.findById(id);
     
     if (!user) {
-      throw new BadRequestException('refresh error')
+      throw new BadRequestException('no user')
     }
 
     const isRefreshTokenValide = refreshToken === user.refreshToken;

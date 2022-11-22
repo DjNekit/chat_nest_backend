@@ -55,7 +55,8 @@ export class UsersService {
       user[field] = updateData[field];
     }
 
-    return await await this.usersRepository.save(user);
+    const updatedUser = await this.usersRepository.save(user);
+    return updatedUser;
   }
 
   async delete(id: number): Promise<void> {
