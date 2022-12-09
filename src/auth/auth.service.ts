@@ -30,11 +30,12 @@ export class AuthService {
   }
 
   async signin(user): Promise<Tokens> {
-    const { email, id } = user;
+    const { email, id, name } = user;
 
     const payload = {
+      sub: id,
       email,
-      sub: id
+      name
     };
 
     const { accessToken, refreshToken } = await this.getTokens(payload);
@@ -47,7 +48,7 @@ export class AuthService {
   }
 
   async signup(createUserDto: CreateUserDto) {
-    const { email, password } = createUserDto;
+    const { email, name, password } = createUserDto;
 
     const isUserExist = Boolean(await this.usersService.findByEmail(email));
 
@@ -65,7 +66,8 @@ export class AuthService {
 
     const payload = {
       sub: newUser.id,
-      email
+      email,
+      name
     };
 
     const tokens = await this.getTokens(payload);
@@ -102,7 +104,8 @@ export class AuthService {
 
     const payload = {
       sub: user.id,
-      email: user.email
+      email: user.email,
+      name: user.name
     };
 
     const tokens = await this.getTokens(payload);

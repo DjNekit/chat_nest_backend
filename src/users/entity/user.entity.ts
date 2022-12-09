@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Long, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -14,6 +14,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true, default: null })
+  @Column({ type: 'longtext', nullable: true, default: null })
   refreshToken: string | null;
 }

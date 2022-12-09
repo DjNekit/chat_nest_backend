@@ -14,10 +14,10 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'refresh-jw
   }
 
   async validate(payload) {
-    const { sub, email } = payload;
+    const { sub: id, email, ...restUserData } = payload;
     return {
-      id: sub,
-      email
+      id,
+      ...restUserData
     };
   }
 }

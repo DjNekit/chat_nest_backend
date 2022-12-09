@@ -15,11 +15,11 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'access-jwt'
   }
 
   async validate(payload: JwtPayload) {
-    const { email, sub } = payload;
+    const { sub: id, ...restUserData } = payload;
 
     return {
-      id: sub,
-      email
+      id,
+      ...restUserData
     };
   }
 }

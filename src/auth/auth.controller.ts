@@ -81,6 +81,7 @@ export class AuthController {
   @Get('current-user')
   @UseGuards(AccessTokenGuard)
   async getCurrentUser(@User() user) {
-    return user;
+    const { iat, exp, ...restUserData } = user
+    return restUserData;
   }
 }
