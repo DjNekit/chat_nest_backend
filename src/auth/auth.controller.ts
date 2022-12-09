@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { Cookies } from 'src/lib/decorators/cookie.decorator';
 import { User } from 'src/lib/decorators/user.decorator';
@@ -78,7 +78,7 @@ export class AuthController {
     };
   }
 
-  @Post('current-user')
+  @Get('current-user')
   @UseGuards(AccessTokenGuard)
   async getCurrentUser(@User() user) {
     return user;
