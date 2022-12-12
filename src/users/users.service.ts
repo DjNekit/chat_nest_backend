@@ -65,7 +65,6 @@ export class UsersService {
 
   async findAllByQuery(queryString: string) {
     const findUsers = await this.usersRepository.findBy({ name: queryString })
-    
     return findUsers
   }
 }

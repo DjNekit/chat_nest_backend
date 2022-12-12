@@ -8,8 +8,7 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Get()
-  async getUsersByQuery(@Query('searchValue') searchValue) {
-    console.log(searchValue)
+  async getUsersByQuery(@Query('value') searchValue) {
     const users = await this.usersService.findAllByQuery(searchValue)
     return {
       users
