@@ -62,4 +62,10 @@ export class UsersService {
   async delete(id: number): Promise<void> {
     await this.usersRepository.delete({ id });
   }
+
+  async findAllByQuery(queryString: string) {
+    const findUsers = await this.usersRepository.findBy({ name: queryString })
+    
+    return findUsers
+  }
 }

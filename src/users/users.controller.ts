@@ -8,10 +8,11 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Get()
-  async getUsers(@Query('searchValue') searchValue) {
+  async getUsersByQuery(@Query('searchValue') searchValue) {
     console.log(searchValue)
+    const users = await this.usersService.findAllByQuery(searchValue)
     return {
-      users: []
+      users
     }
   }
 }
