@@ -63,8 +63,13 @@ export class UsersService {
     await this.usersRepository.delete({ id });
   }
 
-  async findAllByQuery(queryString: string) {
-    const findUsers = await this.usersRepository.findBy({ name: queryString })
+  async findAllByQuery(currentUserId: number, queryString: string) {
+    const findUsers = await this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.name = :name', { name: queryString })
+      .andWhere('user.id != :id', { id: currentUserId })
+      .getMany()
+      
     return findUsers
   }
 }

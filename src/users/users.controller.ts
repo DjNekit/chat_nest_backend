@@ -14,15 +14,14 @@ export class UsersController {
   @UseGuards(AccessTokenGuard)
   async getUsersByQuery(
     @Query('value') searchValue: string,
-    @User('id') userId,
+    @User('id') userId: number,
   ) {
 
-    //! TODO Улучшить выборку из базы данных вместо простой фильтрации
-    const users = await this.usersService.findAllByQuery(searchValue)
-    const filteredUsers = users.filter(user => user.id !== userId)
+    //! TODO добавить поиск по частичному совпадению имени
+    const users = await this.usersService.findAllByQuery(userId, searchValue)
 
     return {
-      users: filteredUsers
+      users
     }
   }
 }

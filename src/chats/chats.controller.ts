@@ -10,7 +10,6 @@ export class ChatsController {
   @Get()
   @UseGuards(AccessTokenGuard)
   async getChats(@User('id') userId: number) {
-    console.log(userId)
     return {
       chats: []
     }
