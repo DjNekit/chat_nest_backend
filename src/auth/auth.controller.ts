@@ -23,7 +23,8 @@ export class AuthController {
   ) {
     const { 
       accessToken, 
-      refreshToken 
+      refreshToken,
+      user
     } = await this.authService.signup(createUserDto);
 
     setRefreshTokenInCookie(res, refreshToken);
@@ -42,7 +43,10 @@ export class AuthController {
 
     setRefreshTokenInCookie(res, refreshToken);
 
-    return { accessToken };
+    return { 
+      accessToken,
+      user
+    };
   }
 
   @Post('/logout')

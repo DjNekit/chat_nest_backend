@@ -77,7 +77,10 @@ export class AuthService {
       refreshToken: tokens.refreshToken
     });
 
-    return tokens;
+    return {
+      ...tokens,
+      user: newUser
+    }
   }
 
   async logout(id: number): Promise<void> {
