@@ -24,7 +24,6 @@ export class AuthController {
     const { 
       accessToken, 
       refreshToken,
-      user
     } = await this.authService.signup(createUserDto);
 
     setRefreshTokenInCookie(res, refreshToken);
@@ -42,10 +41,7 @@ export class AuthController {
 
     setRefreshTokenInCookie(res, refreshToken);
 
-    return { 
-      accessToken,
-      user
-    };
+    return { accessToken };
   }
 
   @Post('/signout')
