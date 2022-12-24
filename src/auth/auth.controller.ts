@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Cookies } from 'src/lib/decorators/cookie.decorator';
 import { User } from 'src/lib/decorators/user.decorator';
 import { setRefreshTokenInCookie } from 'src/lib/utils/setRefreshTokenInCookie';
@@ -37,7 +37,6 @@ export class AuthController {
   async signIn(
     @User() user,
     @Res({ passthrough: true }) res: Response,
-    @Req() req
   ) {
     const { accessToken, refreshToken } = await this.authService.signin(user);
 
@@ -49,7 +48,7 @@ export class AuthController {
     };
   }
 
-  @Post('/logout')
+  @Post('/signout')
   @UseGuards(AccessTokenGuard)
   async logout(
     @User('id') id: number,
@@ -66,7 +65,7 @@ export class AuthController {
   async refreshToken(
     @User('id') id: number,
     @Cookies('refresh-token') refreshToken: string,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     const tokens = await this.authService.refreshTokens(id, refreshToken);
 
@@ -84,7 +83,9 @@ export class AuthController {
 
   @Get('current-user')
   @UseGuards(AccessTokenGuard)
-  async getCurrentUser(@User() user) {
+  async getCurrentUser(
+    @User() user,
+  ) {
     const { iat, exp, ...restUserData } = user
     return restUserData;
   }
