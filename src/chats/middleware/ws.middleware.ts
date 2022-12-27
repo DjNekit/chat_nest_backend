@@ -8,7 +8,6 @@ export interface AuthSocket extends Socket {
 
 export const wsAuthMiddleware = (authService: AuthService) => {
   return async (client: AuthSocket, next: NextFunction) => {
-    console.log('middleware')
     try {
       const accessToken = client.handshake.auth.token
       const verifiedDataFromJwt = await authService.validateToken(accessToken)

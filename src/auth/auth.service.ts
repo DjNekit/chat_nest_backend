@@ -28,7 +28,7 @@ export class AuthService {
 
     return userData;
   }
-
+  
   async validateToken(token: string) {
     const result = await this.jwtService.verifyAsync(token, {
       secret: process.env.SECRET
