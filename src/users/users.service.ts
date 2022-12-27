@@ -62,4 +62,14 @@ export class UsersService {
   async delete(id: number): Promise<void> {
     await this.usersRepository.delete({ id });
   }
+
+  async findAllByQuery(currentUserId: number, queryString: string) {
+    const findUsers = await this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.name = :name', { name: queryString })
+      .andWhere('user.id != :id', { id: currentUserId })
+      .getMany()
+      
+    return findUsers
+  }
 }
