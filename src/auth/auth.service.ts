@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private usersService: UsersService
-  ) { }
+  ) {}
 
   async validateUser(email: string, inputPassword: string) {
     const user = await this.usersService.findByEmail(email);
@@ -28,6 +28,14 @@ export class AuthService {
 
     return userData;
   }
+
+  async validateToken(token: string) {
+    const result = await this.jwtService.verifyAsync(token, {
+      secret: process.env.SECRET
+    })
+    return result
+  }
+  
 
   async signin(user): Promise<Tokens> {
     const { email, id, name } = user;
