@@ -16,7 +16,6 @@ export class UsersController {
     @Query('value') searchValue: string,
     @User('id') userId: number,
   ) {
-
     //! TODO добавить поиск по частичному совпадению имени
     const users = await this.usersService.findAllByQuery(userId, searchValue)
 

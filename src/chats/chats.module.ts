@@ -7,7 +7,7 @@ import { AuthModule } from "../auth/auth.module";
 import { UsersModule } from "../users/users.module";
 
 @Module({
-  //controllers: [ChatsController],
+  controllers: [ChatsController],
   imports: [AuthModule, UsersModule],
   providers: [ChatsGateway, ChatsService]
 })
