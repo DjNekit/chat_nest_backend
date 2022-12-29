@@ -1,11 +1,12 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Chat } from "./chat.entity";
 
 @Entity()
 export class Message {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @ManyToOne(() => Chat, chat => chat.messages)
   chat_id: number
 
   @Column()
@@ -13,6 +14,9 @@ export class Message {
 
   @Column({ type: 'longtext' })
   content: string
+
+  @Column()
+  status: 'read' | 'unread' | 'delete'
 
   @CreateDateColumn()
   created_date: Date

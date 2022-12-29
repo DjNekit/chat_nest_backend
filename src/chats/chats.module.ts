@@ -6,13 +6,11 @@ import { ChatsGateway } from "./chats.gateway";
 import { AuthModule } from "../auth/auth.module";
 import { UsersModule } from "../users/users.module";
 import { Chat } from './entity/chat.entity';
-import { Members } from "./entity/members.entity";
 import { Message } from "./entity/message.entity";
-import { Status } from "./entity/status.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Chat, Members, Message, Status]),
+    TypeOrmModule.forFeature([Chat, Message]),
     AuthModule, 
     UsersModule
   ],

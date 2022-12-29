@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Message } from "./message.entity";
+import { User } from "../../users/entity/user.entity";
 
 @Entity()
 export class Chat {
@@ -14,8 +16,11 @@ export class Chat {
   @Column({ default: false })
   isPublic: boolean
 
-  // @OneToMany()
-  // messages
+  @OneToMany(() => Message, message => message.chat_id)
+  messages: Message[]
+
+  @ManyToMany(() => User, user => user.chats)
+  members: User[]
 
   @CreateDateColumn()
   created_date: Date
