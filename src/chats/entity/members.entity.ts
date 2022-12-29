@@ -1,10 +1,10 @@
-import { Column, Entity } from "typeorm";
+import { Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Members {
-  @Column()
+  @PrimaryColumn()
   chat_id: number
 
-  @Column()
+  @PrimaryColumn()
   user_id: number
 }
