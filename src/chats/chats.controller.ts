@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { AccessTokenGuard } from "../auth/guards/access-token.guard";
 import { User } from "../lib/decorators/user.decorator";
 import { ChatsService } from "./chats.service";
@@ -12,11 +12,18 @@ export class ChatsController {
 
   @Get()
   @UseGuards(AccessTokenGuard)
-  async getChats(@User('id') userId: number) {
+  async getChats(
+    @User('id') userId: number,
+    @Query('companionId') companionId: string,
+  ) {
+
+    if (companionId) {
+      const chat = await this.chatsService.findOrCreateChat(userId, companionId)
+      return chat
+    }
+     
     const chats = await this.chatsService.getChats(userId)
 
-    return {
-      chats
-    }
+    return chats
   }
 }

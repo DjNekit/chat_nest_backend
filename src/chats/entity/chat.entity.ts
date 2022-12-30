@@ -13,8 +13,8 @@ export class Chat {
   @Column({ nullable: true, default: null })
   name: string | null
 
-  @Column({ default: false })
-  isPublic: boolean
+  @Column({ default: true })
+  isPrivate: boolean
 
   @OneToMany(() => Message, message => message.chat_id)
   messages: Message[]
@@ -22,12 +22,12 @@ export class Chat {
   @ManyToMany(() => User, user => user.chats)
   members: User[]
 
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   created_date: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true })
   updated_date: Date
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ nullable: true })
   delete_date: Date
 }
