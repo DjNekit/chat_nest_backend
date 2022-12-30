@@ -7,7 +7,7 @@ export class Message {
   id: number
 
   @ManyToOne(() => Chat, chat => chat.messages)
-  chat_id: number
+  chat: Chat
 
   @Column()
   author_id: number
@@ -15,15 +15,15 @@ export class Message {
   @Column({ type: 'longtext' })
   content: string
 
-  @Column()
+  @Column({ default: 'unread' })
   status: 'read' | 'unread' | 'delete'
 
   @CreateDateColumn()
   created_date: Date
 
-  @UpdateDateColumn()
-  updated_date: Date
+  // @UpdateDateColumn()
+  // updated_date: Date
 
-  @DeleteDateColumn()
-  delete_date: Date
+  // @DeleteDateColumn()
+  // delete_date: Date
 }

@@ -16,7 +16,7 @@ export class Chat {
   @Column({ default: true })
   isPrivate: boolean
 
-  @OneToMany(() => Message, message => message.chat_id)
+  @OneToMany(() => Message, message => message.chat)
   messages: Message[]
 
   @ManyToMany(() => User, user => user.chats)
