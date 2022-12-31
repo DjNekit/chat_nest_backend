@@ -10,7 +10,7 @@ import { SubscribeEvent } from "./decorators/SubscribeEvent";
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost',
+    origin: true
   }
 })
 export class ChatsGateway {
