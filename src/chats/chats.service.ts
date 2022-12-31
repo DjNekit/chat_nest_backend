@@ -25,6 +25,7 @@ export class ChatsService {
       .createQueryBuilder('chat')
       .whereInIds(chatIds)
       .leftJoinAndSelect('chat.members', 'user')
+      .where('user.id != :id', { id: userId })
       .leftJoinAndSelect('chat.messages', 'message')
       .getMany()
 
