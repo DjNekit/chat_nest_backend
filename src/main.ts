@@ -1,14 +1,13 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { logger } from './logger.middleware';
 import * as cookieParser from 'cookie-parser';
-import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // app.useWebSocketAdapter(new WsAdapter(app));
   app.enableCors({
     origin: true,
     credentials: true
