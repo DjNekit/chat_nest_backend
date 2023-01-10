@@ -27,19 +27,21 @@ export class ChatsService {
   }
 
   async getChats(userId: number) {
-    const chats = await this.chatsRepository
-      .createQueryBuilder('chat')
-      .leftJoin('chat.members', 'user')
-      .where('user.id = :id', { id: userId })
-      .leftJoinAndSelect('chat.members', 'user2')
-      .where('user2.id != :userId', { userId })
-      .leftJoinAndSelect('chat.messages', 'message')
-      .select('')
-      .orderBy('message.created_date', 'ASC')
-      .addOrderBy('chat.created_date', 'DESC')
-      .getMany()
+    const chatIds = await this.getChatsIds(userId)
 
-    return chats
+    if (chatIds.length > 0) {
+      const chatsWithMembers = await this.chatsRepository
+      .createQueryBuilder('chat')
+      .whereInIds(chatIds)
+      .leftJoinAndSelect('chat.members', 'user')
+      .where('user.id != :id', { id: userId })
+      .leftJoinAndSelect('chat.messages', 'message')
+      .getMany()
+      return chatsWithMembers
+    }
+    
+    return []
+    
   }
 
   async saveMessage(data) {
