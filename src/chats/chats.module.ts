@@ -7,10 +7,11 @@ import { AuthModule } from "../auth/auth.module";
 import { UsersModule } from "../users/users.module";
 import { Chat } from './entity/chat.entity';
 import { Message } from "./entity/message.entity";
+import { User } from "src/users/entity/user.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Chat, Message]),
+    TypeOrmModule.forFeature([Chat, Message, User]),
     AuthModule, 
     UsersModule
   ],

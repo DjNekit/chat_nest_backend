@@ -8,7 +8,7 @@ export const setRefreshTokenInCookie = (res: Response, refreshToken: string) => 
       httpOnly: true,
       secure: true,
       maxAge: 60 * 60 * 24 * 7, // Жизнь кукиса как у рефреш токена, 7 дней
-      domain: process.env.COOKIE_DOMAIN,
+      domain: process.env.COOKIE_DOMAIN,//'nextclient-jade.vercel.app', //process.env.COOKIE_DOMAIN,
       path: '/',
       sameSite: 'none'
     })
