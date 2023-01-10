@@ -4,40 +4,67 @@ import { Repository } from "typeorm";
 import { Chat } from "./entity/chat.entity";
 import { User } from "../users/entity/user.entity";
 import { UsersService } from "src/users/users.service";
+import { Message } from "./entity/message.entity";
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectRepository(Chat)
     private chatsRepository: Repository<Chat>,
-  ) {}
+    // private usersRepository: Repository<User>,
+    private usersService: UsersService
+  ) { }
 
-  async getChats(userId: number) {
-    const result = await this.chatsRepository
+  async getChatsIds(userId: number) {
+    const chatIds = await this.chatsRepository
       .createQueryBuilder('chat')
       .leftJoin('chat.members', 'user')
       .where('user.id = :id', { id: userId })
+      .select('chat.id')
       .getMany()
 
-    const chatIds = result.map(chat => chat.id)
+    return chatIds
+  }
 
-    const chatsWithMembers = await this.chatsRepository
+  async getChats(userId: number) {
+    const chats = await this.chatsRepository
       .createQueryBuilder('chat')
-      .whereInIds(chatIds)
-      .leftJoinAndSelect('chat.members', 'user')
-      .where('user.id != :id', { id: userId })
+      .leftJoin('chat.members', 'user')
+      .where('user.id = :id', { id: userId })
+      .leftJoinAndSelect('chat.members', 'user2')
+      .where('user2.id != :userId', { userId })
       .leftJoinAndSelect('chat.messages', 'message')
+      .select('')
+      .orderBy('message.created_date', 'ASC')
+      .addOrderBy('chat.created_date', 'DESC')
       .getMany()
 
+    return chats
+  }
 
-    return chatsWithMembers
+  async saveMessage(data) {
+    const { id, chatId, content, author_id, status } = data
+
+    const newMessage = new Message()
+    newMessage.id = id
+    newMessage.content = content
+    newMessage.chat = chatId
+    newMessage.author_id = author_id
+    newMessage.status = status
+
+    await this.chatsRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Message)
+      .values(newMessage)
+      .execute()
   }
 
   async findOrCreateChat(userId, companionId) {
     this.chatsRepository
       .createQueryBuilder()
 
-      
+
     return {
 
     }

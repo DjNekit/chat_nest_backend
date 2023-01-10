@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { UsersService } from "../users/users.service";
 import { AuthSocket, wsAuthMiddleware } from "./middleware/ws.middleware";
 import { SubscribeEvent } from "./decorators/SubscribeEvent";
+import { IoAdapter } from "@nestjs/platform-socket.io";
 
 @WebSocketGateway({
   cors: {
@@ -16,39 +17,43 @@ import { SubscribeEvent } from "./decorators/SubscribeEvent";
 export class ChatsGateway {
   constructor(
     private authService: AuthService,
-    private usersService: UsersService,
-    private chatsService: ChatsService
+    private chatsService: ChatsService,
   ) {}
 
-  // @WebSocketServer()
-  // server: Server
+  @WebSocketServer()
+  server: Server
 
   afterInit(server: Server) {
     server.use(wsAuthMiddleware(this.authService))
   }
   
-  handleConnection(client: AuthSocket) {
-    // client.emit('message', {
-    //   id: counter,
-    //   message: ++counter
-    // })
+  async handleConnection(client: AuthSocket) {
+    const chatsIds = await this.chatsService.getChatsIds(client.user.id)
+
+    chatsIds.forEach(chat => {
+      client.join(String(chat.id))
+    })
   }
-  @SubscribeEvent('events')
+  @SubscribeEvent('newMessage')
   @UseGuards(WsGuard)
-  handleEvent(
+  async newMessage(
     @MessageBody() data, 
     @ConnectedSocket() client: AuthSocket
   ) {
-    console.log(data)
+    const { chatId } = data
+
+    await this.chatsService.saveMessage(data)
+
+    client.to(String(chatId)).emit('message', data)
+
+    // this.server.to()
+
+    // client.emit('message', {
+    //   text: data.content
+    // })
     // client.emit('message', {
     //   // id: counter,
     //   // message: ++counter
     // })
-  }
-
-  @SubscribeMessage('message')
-  @UseGuards(WsGuard)
-  handleMessage(@MessageBody() data ) {
-     
   }
 }

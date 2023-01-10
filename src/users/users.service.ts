@@ -11,6 +11,16 @@ export class UsersService {
     private usersRepository: Repository<User>
   ) {}
 
+  async getChats(userId) {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .relation('chats')
+      .of(userId)
+      .loadMany()
+
+    // return chats
+  }
+
   async findAll() {
     return await this.usersRepository.find();
   }
