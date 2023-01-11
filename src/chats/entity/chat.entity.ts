@@ -21,7 +21,9 @@ export class Chat {
   })
   messages: Message[]
 
-  @ManyToMany(() => User, user => user.chats)
+  @ManyToMany(() => User, user => user.chats, {
+    cascade: true
+  })
   members: User[]
 
   @CreateDateColumn({ nullable: true })
